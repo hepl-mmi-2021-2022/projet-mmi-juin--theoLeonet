@@ -5,7 +5,7 @@ export abstract class BaseImage implements IHasCanvas, IIsDrawable {
     canvasElement: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
     image: HTMLImageElement;
-    position: {x: number, y: number};
+    position: { x: number, y: number };
 
     constructor(canvasElement: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
         this.canvasElement = canvasElement;
@@ -17,9 +17,9 @@ export abstract class BaseImage implements IHasCanvas, IIsDrawable {
         }
     }
 
-    createAndLoad(src: string){
+    createAndLoad(src: string) {
         this.image.src = src;
-        this.image.addEventListener('load', ()=>this.draw());
+        this.image.addEventListener('load', () => this.draw());
     }
 
     abstract draw(): void;
