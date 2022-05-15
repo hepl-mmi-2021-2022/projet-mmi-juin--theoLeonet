@@ -4,6 +4,7 @@ export class GameController {
     private canvas: Canvas;
     private readonly canvasElement: HTMLCanvasElement;
     private readonly ctx: CanvasRenderingContext2D;
+    private score: HTMLParagraphElement;
 
     constructor() {
         this.canvasElement = document.getElementById('game-canvas') as HTMLCanvasElement;

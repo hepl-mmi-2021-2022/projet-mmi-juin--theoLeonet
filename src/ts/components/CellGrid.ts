@@ -1,8 +1,6 @@
 import {settings} from "../settings";
 import {Row} from "./Row";
 import {Cell} from "./Cell";
-import {forEachResolvedProjectReference} from "ts-loader/dist/instances";
-import {Score} from "./Score";
 
 export class CellGrid {
     private readonly canvasElement: HTMLCanvasElement;
@@ -12,12 +10,19 @@ export class CellGrid {
     cells: Cell[];
     private randomCell: Cell;
     private emptyCells: Cell[];
-    private reversedX: boolean;
-    private reversedY: boolean;
     private hasMoved: boolean;
-    private score: Score;
+    private score: HTMLSpanElement;
+    private scoreValue: number;
+    private best: any;
+    private bestElement: HTMLSpanElement;
+    private gameEndForm: HTMLTemplateElement;
+    private gameEndFormClone: Node;
+    private resetButton: HTMLButtonElement;
+    private gameOver: Boolean;
 
-    constructor(canvasElement: HTMLCanvasElement, ctx: CanvasRenderingContext2D, score: Score) {
+    constructor(canvasElement: HTMLCanvasElement, ctx: CanvasRenderingContext2D, score: HTMLSpanElement, best: HTMLSpanElement) {
+        this.gameOver = false;
+
         this.canvasElement = canvasElement;
         this.ctx = ctx;
 
@@ -28,15 +33,16 @@ export class CellGrid {
         this.hasMoved = false;
 
         this.score = score;
+        this.bestElement = best;
 
         this.createGrid(settings.grid.rowNumber, 0);
 
         this.getCells();
         this.getRandomCells(2);
 
-        this.addEventListeners();
+        this.getDirection();
 
-        this.score.draw();
+        this.saveAndUpdateBestScore();
     }
 
     createGrid(rowNumber: number, rowY: number) {
@@ -68,18 +74,19 @@ export class CellGrid {
             this.getEmptyCells();
             this.randomCell = this.emptyCells[(Math.floor(Math.random() * this.emptyCells.length))]
             Math.random() > .5 ? this.randomCell.value = 2 : this.randomCell.value = 4;
-            this.ctx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
-            this.cells.forEach((cell: Cell) => cell.draw())
+            this.clearAndDrawCells();
         }
     }
 
-    slideRight() {
+    slideRight(istTest = false) {
         this.rows.forEach((row: Row) => {
             for (let i = 0; i < row.cells.length + 10; i++) {
                 for (let i = row.cells.length - 2; i >= 0; i--) {
                     if (row.cells[i].value && !row.cells[i + 1].value) {
-                        row.cells[i + 1].value = row.cells[i].value;
-                        row.cells[i].value = 0;
+                        if (!istTest) {
+                            row.cells[i + 1].value = row.cells[i].value;
+                            row.cells[i].value = 0;
+                        }
                         this.hasMoved = true;
                     }
                 }
@@ -87,29 +94,34 @@ export class CellGrid {
         })
     }
 
-    mergeRight() {
-        this.slideRight();
+    mergeRight(isTest = false) {
+        this.slideRight(isTest);
         this.rows.forEach((row: Row) => {
             for (let i = row.cells.length - 1; i > 0; i--) {
                 if (row.cells[i].value && row.cells[i - 1].value === row.cells[i].value) {
-                    row.cells[i].value *= 2;
-                    row.cells[i - 1].value = 0;
+                    if (!isTest) {
+                        row.cells[i].value *= 2;
+                        row.cells[i - 1].value = 0;
+                        this.scoreValue = parseInt(this.score.innerText) + row.cells[i].value;
+                        this.score.innerText = this.scoreValue.toString();
+                        this.saveAndUpdateBestScore();
+                    }
                     this.hasMoved = true;
-                    this.score.score += row.cells[i].value;
-                    console.log(this.score.score);
                 }
             }
         })
-        this.slideRight();
+        this.slideRight(isTest);
     }
 
-    slideLeft() {
+    slideLeft(istTest = false) {
         this.rows.forEach((row: Row) => {
             for (let i = 0; i < row.cells.length; i++) {
                 for (let j = 1; j < row.cells.length; j++) {
                     if (row.cells[j].value && !row.cells[j - 1].value) {
-                        row.cells[j - 1].value = row.cells[j].value;
-                        row.cells[j].value = 0;
+                        if (!istTest) {
+                            row.cells[j - 1].value = row.cells[j].value;
+                            row.cells[j].value = 0;
+                        }
                         this.hasMoved = true;
                     }
                 }
@@ -117,75 +129,88 @@ export class CellGrid {
         })
     }
 
-    mergeLeft() {
-        this.slideLeft();
+    mergeLeft(isTest = false) {
+        this.slideLeft(isTest);
         this.rows.forEach((row: Row) => {
             for (let i = 0; i < row.cells.length - 1; i++) {
                 if (row.cells[i].value && row.cells[i + 1].value === row.cells[i].value) {
-                    row.cells[i].value *= 2;
-                    row.cells[i + 1].value = 0;
+                    if (!isTest) {
+                        row.cells[i].value *= 2;
+                        row.cells[i + 1].value = 0;
+                        this.scoreValue = parseInt(this.score.innerText) + row.cells[i].value;
+                        this.score.innerText = this.scoreValue.toString();
+                        this.saveAndUpdateBestScore();
+                    }
                     this.hasMoved = true;
-                    this.score.score += row.cells[i].value;
-                    console.log(this.score.score);
                 }
             }
         })
-        this.slideLeft();
+        this.slideLeft(isTest);
     }
 
-    slideDown() {
+    slideDown(isTest = false) {
         for (let i = 0; i < 3; i++) {
             for (let i = 0; i < this.cells.length - 4; i++) {
                 if (this.cells[i].value && !this.cells[i + 4].value) {
-                    this.cells[i + 4].value = this.cells[i].value;
-                    this.cells[i].value = 0;
+                    if (!isTest) {
+                        this.cells[i + 4].value = this.cells[i].value;
+                        this.cells[i].value = 0;
+                    }
                     this.hasMoved = true;
                 }
             }
         }
     }
 
-    mergeDown() {
-        this.slideDown();
+    mergeDown(isTest = false) {
+        this.slideDown(isTest);
         for (let i = this.cells.length - 1; i >= 4; i--) {
             if (this.cells[i].value && this.cells[i - 4].value === this.cells[i].value) {
-                this.cells[i].value *= 2;
-                this.cells[i - 4].value = 0;
+                if (!isTest) {
+                    this.cells[i].value *= 2;
+                    this.cells[i - 4].value = 0;
+                    this.scoreValue = parseInt(this.score.innerText) + this.cells[i].value;
+                    this.score.innerText = this.scoreValue.toString();
+                    this.saveAndUpdateBestScore();
+                }
                 this.hasMoved = true;
-                this.score.score += this.cells[i].value;
-                console.log(this.score.score);
             }
         }
-        this.slideDown();
+        this.slideDown(isTest);
     }
 
-    slideUp() {
+    slideUp(isTest = false) {
         for (let i = 0; i < 3; i++) {
             for (let i = this.cells.length - 1; i >= 4; i--) {
                 if (this.cells[i].value && !this.cells[i - 4].value) {
-                    this.cells[i - 4].value = this.cells[i].value;
-                    this.cells[i].value = 0;
+                    if (!isTest) {
+                        this.cells[i - 4].value = this.cells[i].value;
+                        this.cells[i].value = 0;
+                    }
                     this.hasMoved = true;
                 }
             }
         }
     }
 
-    mergeUp(){
-        this.slideUp();
+    mergeUp(isTest = false) {
+        this.slideUp(isTest);
         for (let i = 0; i < this.cells.length - 4; i++) {
             if (this.cells[i].value && this.cells[i + 4].value === this.cells[i].value) {
-                this.cells[i].value *= 2;
-                this.cells[i + 4].value = 0;
+                if (!isTest) {
+                    this.cells[i].value *= 2;
+                    this.cells[i + 4].value = 0;
+                    this.scoreValue = parseInt(this.score.innerText) + this.cells[i].value;
+                    this.score.innerText = this.scoreValue.toString();
+                    this.saveAndUpdateBestScore();
+                }
                 this.hasMoved = true;
-                this.score.score += this.cells[i].value;
-                console.log(this.score.score);
             }
         }
-        this.slideUp();
+        this.slideUp(isTest);
     }
 
-    addEventListeners() {
+    getDirection() {
         addEventListener('keydown', (key: KeyboardEvent) => {
             if (key.code === 'ArrowRight') {
                 this.mergeRight();
@@ -199,12 +224,34 @@ export class CellGrid {
             if (key.code === 'ArrowUp') {
                 this.mergeUp();
             }
-            if (this.hasMoved){
+
+            if (this.hasMoved) {
                 this.getRandomCells(1);
                 this.clearAndDrawCells();
                 this.hasMoved = false;
             }
+
+            if (this.emptyCells.length === 1 && !this.gameOver) {
+                this.checkForMoves();
+            }
         })
+    }
+
+    checkForMoves() {
+        if (!this.gameOver){
+            this.mergeRight(true);
+            this.mergeLeft(true);
+            this.mergeDown(true);
+            this.mergeUp(true);
+            if (!this.hasMoved) {
+                this.gameEndForm = document.querySelector('.endFormTemplate') as HTMLTemplateElement;
+                this.gameEndFormClone = this.gameEndForm.content.cloneNode(true);
+                document.querySelector('.ui').appendChild(this.gameEndFormClone);
+                this.resetButton = document.querySelector('.startAgainButton') as HTMLButtonElement;
+                this.addEventListeners();
+                this.gameOver = true;
+            }
+        }
     }
 
     clearAndDrawCells() {
@@ -212,6 +259,34 @@ export class CellGrid {
         this.cells.forEach((cell: Cell) => {
             cell.draw()
         })
-        this.score.draw();
+    }
+
+    saveAndUpdateBestScore() {
+        this.best = localStorage.getItem('best');
+
+        if (parseInt(this.best) <= parseInt(this.score.innerText) || this.best == null) {
+            this.best = localStorage.setItem('best', this.score.innerText);
+            this.best = localStorage.getItem('best');
+        }
+
+        this.bestElement.innerText = this.best;
+    }
+
+    resetGame() {
+        document.querySelector('.ui').removeChild(document.querySelector('.restart'));
+        this.cells.forEach((cell) => {
+            cell.value = 0;
+            this.score.innerText = '0';
+            this.gameOver = true;
+        })
+        this.clearAndDrawCells();
+        this.getRandomCells(2);
+    }
+
+    addEventListeners() {
+        this.resetButton.addEventListener('click', () => {
+            this.resetGame();
+            this.gameOver = false;
+        })
     }
 }

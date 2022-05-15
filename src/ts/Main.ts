@@ -5,4 +5,5 @@ class Main {
         new GameController();
     }
 }
-new Main()
+
+new Main();

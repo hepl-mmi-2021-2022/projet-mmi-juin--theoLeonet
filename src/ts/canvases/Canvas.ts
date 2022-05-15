@@ -1,12 +1,12 @@
 import {BaseCanvas} from "../../../canvasbp/ts";
 import {CellGrid} from "../components/CellGrid";
 import {Cell} from "../components/Cell";
-import {Score} from "../components/Score";
 
 export class Canvas extends BaseCanvas {
     private readonly cellGrid: CellGrid;
-    private score: Score;
     private scoreText: number;
+    private score: HTMLSpanElement;
+    private best: HTMLSpanElement;
 
     constructor(canvasElement: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
         super(canvasElement, ctx);
@@ -14,13 +14,14 @@ export class Canvas extends BaseCanvas {
         this.fullWindowResize();
         this.resizeEventListener();
 
-        this.score = new Score(this.canvasElement, this.ctx, 0);
+        this.score = document.querySelector('.score span') as HTMLSpanElement;
+        this.best = document.querySelector('#best span') as HTMLSpanElement
 
-        this.cellGrid = new CellGrid(canvasElement, ctx, this.score);
+        this.cellGrid = new CellGrid(canvasElement, ctx, this.score, this.best);
     }
 
     protected resizeEventListener() {
-        window.addEventListener('resize', ()=>{
+        window.addEventListener('resize', () => {
             this.fullWindowResize();
             this.cellGrid.clearAndDrawCells();
         });
