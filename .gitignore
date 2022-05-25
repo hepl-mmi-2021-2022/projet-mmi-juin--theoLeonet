@@ -305,5 +305,3 @@ GitHub.sublime-settings
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,jetbrains+all,node,laravel,sublimetext
 /package-lock.json
-
-dist

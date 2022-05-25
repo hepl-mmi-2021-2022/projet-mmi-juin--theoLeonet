@@ -18,10 +18,13 @@ Toutes les règles du jeu sont normalement reprises. La seule différence est le
 
 Le jeu se joue avec les flèches du clavier.
 
+[Jouez ici!](https://hepl-mmi-2021-2022.github.io/projet-mmi-juin-theo-leonet/)
+
 ## To do list
 - [ ] Design
 - [ ] Animations (autres que celles du jeu original)
-- [ ] optimiser le code
+- [ ] Optimiser le code
+- [ ] Add sound
 - [X] Gameplay
 - [X] Gestion du score + meilleur score
 - [X] Gestion de la fin et du recommencement
