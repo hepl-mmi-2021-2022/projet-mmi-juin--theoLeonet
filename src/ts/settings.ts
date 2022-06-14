@@ -1,15 +1,32 @@
 export const settings = {
+    canvas: {
+        bss: 500,
+        sss: 280,
+    },
     grid: {
-        gap: 20,
+        bsg: 16,
+        ssg: 9,
         rowNumber: 4,
         columnNumber: 4,
         cells: {
-            w: 100,
-            h: 100,
+            bss: 105,
+            sss: 58,
             position: {
                 x: 0,
                 y: 0
-            }
+            },
+            colors : {
+                2 : '#eee4da',
+                4 : '#ede0c8',
+                8 : '#f2b179',
+                16 : '#f59563',
+                32 : '#f67c5f',
+                64 : '#f65e3b',
+                128 : '#edcf72',
+                256 : '#edcc61',
+                512 : '#edc850',
+                1024 : '#edc53f',
+                2048 : '#edc22e'},
         }
     }
 }

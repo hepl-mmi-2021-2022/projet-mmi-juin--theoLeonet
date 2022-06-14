@@ -1,1 +1,368 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
 
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ----------------------------------------------------------------------------------------------------
+Super Form Reset
+A couple of things to watch out for:
+- IE8: If a text input doesn't have padding on all sides or none the text won't be centered.
+- The default border sizes on text inputs in all UAs seem to be slightly different. You're better off using custom borders.
+- You NEED to set the font-size and family on all form elements
+- Search inputs need to have their appearance reset and the box-sizing set to content-box to match other UAs
+- You can style the upload button in webkit using ::-webkit-file-upload-button
+- ::-webkit-file-upload-button selectors can't be used in the same selector as normal ones. FF and IE freak out.
+- IE: You don't need to fake inline-block with labels and form controls in IE. They function as inline-block.
+- By turning off ::-webkit-search-decoration, it removes the extra whitespace on the left on search inputs
+----------------------------------------------------------------------------------------------------*/
+input,
+label,
+select,
+button,
+textarea {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  display: inline-block;
+  vertical-align: middle;
+  white-space: normal;
+  background: none;
+  line-height: 1;
+  /* Browsers have different default form fonts */
+}
+
+/* Remove the stupid outer glow in Webkit */
+input:focus,
+button:focus,
+select:focus {
+  outline: 0;
+}
+
+/* Box Sizing Reset
+-----------------------------------------------*/
+/* All of our custom controls should be what we expect them to be */
+input,
+textarea {
+  box-sizing: content-box;
+}
+
+/* These elements are usually rendered a certain way by the browser */
+button,
+input[type=reset],
+input[type=button],
+input[type=submit],
+input[type=checkbox],
+input[type=radio],
+select {
+  box-sizing: border-box;
+}
+
+/* Text Inputs
+-----------------------------------------------*/
+/* Button Controls
+-----------------------------------------------*/
+input[type=checkbox],
+input[type=radio] {
+  width: 13px;
+  height: 13px;
+}
+
+/* File Uploads
+-----------------------------------------------*/
+/* Search Input
+-----------------------------------------------*/
+/* Make webkit render the search input like a normal text field */
+input[type=search] {
+  -webkit-appearance: textfield;
+  -webkit-box-sizing: content-box;
+}
+
+/* Turn off the recent search for webkit. It adds about 15px padding on the left */
+::-webkit-search-decoration {
+  display: none;
+}
+
+/* Buttons
+-----------------------------------------------*/
+button,
+input[type=reset],
+input[type=button],
+input[type=submit] {
+  /* Fix IE7 display bug */
+  overflow: visible;
+  width: auto;
+}
+
+/* IE8 and FF freak out if this rule is within another selector */
+::-webkit-file-upload-button {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+/* Textarea
+-----------------------------------------------*/
+textarea {
+  /* Move the label to the top */
+  vertical-align: top;
+  /* Turn off scroll bars in IE unless needed */
+  overflow: auto;
+}
+
+/* Selects
+-----------------------------------------------*/
+select[multiple] {
+  /* Move the label to the top */
+  vertical-align: top;
+}
+
+@font-face {
+  font-family: "Clear Sans";
+  src: url(../fonts/ClearSans-Regular-webfont.woff?72f3056dc3712326ce551419b4a61806);
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Clear Sans";
+  src: url(../fonts/ClearSans-Bold-webfont.woff?92762598f32932934f7f28b2a9e1f2b3);
+  font-style: normal;
+  font-weight: bold;
+}
+body {
+  padding: 32px;
+  background: #FAF8EF;
+  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+  color: #776E65;
+}
+body strong {
+  font-weight: bold;
+}
+body a {
+  display: block;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.grid__container {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: 48px auto;
+  background: #BCACA1;
+  border-radius: 0.25rem;
+}
+
+.ui {
+  width: 280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 2em;
+}
+.ui > p {
+  font-size: 14px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+}
+
+.scores__container {
+  grid-area: 1/2/2/-1;
+  display: flex;
+  align-items: start;
+  justify-content: end;
+  gap: 0.5em;
+}
+.scores__container > * {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding: 0.5em 1em;
+  background: #BCACA1;
+  color: #EEE4D9;
+  border-radius: 0.25em;
+}
+
+.score__container, .best-score__container {
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.score__container span, .best-score__container span {
+  display: block;
+  font-size: 25px;
+  color: #FFF;
+}
+
+.reset-button__container {
+  grid-column: 2/-1;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  justify-self: end;
+  padding: 0.5em 1em;
+  font-size: 18px;
+  font-weight: bold;
+  color: #FFF;
+  background: #8E7A65;
+  border-radius: 0.25em;
+}
+
+#htp {
+  font-size: 14px;
+  width: 280px;
+  margin: 0 auto;
+}
+
+.retry-btn__container {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  gap: 1em;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.6);
+}
+.retry-btn__container .game-lost {
+  font-size: 64px;
+  font-weight: bold;
+}
+.retry-btn__container .retry-btn {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  margin: 0 auto;
+  padding: 0.5em 1em;
+  font-size: 18px;
+  background: #8E7A65;
+  color: #FFF;
+  border-radius: 0.25em;
+}
+
+@media screen and (min-width: 520px) {
+  h1 {
+    font-size: 80px;
+  }
+
+  .grid__container {
+    width: 500px;
+    height: 500px;
+  }
+
+  .ui, #htp {
+    width: 500px;
+  }
+  .ui > p, #htp > p {
+    font-size: 18px;
+  }
+}

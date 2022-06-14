@@ -14,23 +14,48 @@
 </head>
 
 <body>
-<div class="ui">
+<div class="ui" id="ui">
     <h1>2048</h1>
-    <p class="score">Score <span>0</span></p>
-    <p class="best-score" id="best">Best score <span>0</span></p>
-</div>
-<canvas class="canvas" id="game-canvas">
-    Texte alternatif à destination des navigateurs qui ne supportent pas canvas.
-</canvas>
-<div class="background"></div>
-<template class="endFormTemplate">
-    <div class="restart">
-        <p>
-            Game Over :((
-        </p>
-        <button type="submit" class="startAgainButton">Start again</button>
+    <p class="intro">
+        Join the tiles, get to <strong>2048!</strong>
+        <a href="#htp">How to play →</a>
+    </p>
+    <div class="scores__container">
+        <div class="score__container">
+            <p class="score">Score <span>0</span></p>
+        </div>
+        <div class="best-score__container">
+            <p class="best-score" id="best">Best<span>0</span></p>
+        </div>
     </div>
-</template>
+    <div class="reset-button__container">
+        <a href="#" class="reset-button">
+            New game
+        </a>
+    </div>
+</div>
+<div class="grid__container">
+    <div class="background"></div>
+    <canvas class="canvas" id="game-canvas">
+        Votre navigateur ne supporte pas Canvas! Veuillez utiliser un navigateur plus moderne.
+    </canvas>
+    <template class="game-lost__template">
+        <div class="retry-btn__container">
+            <p class="game-lost">
+                Game Over !
+            </p>
+            <button type="submit" class="retry-btn">
+                Try again
+            </button>
+        </div>
+    </template>
+</div>
+<div id="htp">
+    <p>
+        <strong>HOW TO PLAY </strong>: Use your <strong>arrow keys</strong> to move the tiles. Tiles with the same number <strong> merge into one </strong> when they touch. Add them up to reach <strong>2048!</strong>
+        <a href="#ui">Start playing →</a>
+    </p>
+</div>
 <script src="dist/js/main.js"></script>
 </body>
 </html>  

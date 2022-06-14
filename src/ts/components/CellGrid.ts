@@ -19,6 +19,7 @@ export class CellGrid {
     private gameEndFormClone: Node;
     private resetButton: HTMLButtonElement;
     private gameOver: Boolean;
+    private resetLink: HTMLAnchorElement;
 
     constructor(canvasElement: HTMLCanvasElement, ctx: CanvasRenderingContext2D, score: HTMLSpanElement, best: HTMLSpanElement) {
         this.gameOver = false;
@@ -34,8 +35,9 @@ export class CellGrid {
 
         this.score = score;
         this.bestElement = best;
+        this.resetLink = document.querySelector('.reset-button__container') as HTMLAnchorElement;
 
-        this.createGrid(settings.grid.rowNumber, 0);
+        this.createGrid(settings.grid.rowNumber, innerWidth > 520 ? settings.grid.bsg : settings.grid.ssg);
 
         this.getCells();
         this.getRandomCells(2);
@@ -43,12 +45,18 @@ export class CellGrid {
         this.getDirection();
 
         this.saveAndUpdateBestScore();
+
+        this.addEventListeners();
     }
 
     createGrid(rowNumber: number, rowY: number) {
         for (let i = 0; i < rowNumber; i++) {
             this.rows.push(new Row(this.canvasElement, this.ctx, rowY));
-            rowY += settings.grid.gap + settings.grid.cells.h;
+            if (innerWidth > 520) {
+                rowY += settings.grid.bsg + settings.grid.cells.bss;
+            } else {
+                rowY += settings.grid.ssg + settings.grid.cells.sss;
+            }
         }
     }
 
@@ -238,18 +246,19 @@ export class CellGrid {
     }
 
     checkForMoves() {
-        if (!this.gameOver){
+        console.log(this.gameOver)
+        if (!this.gameOver) {
             this.mergeRight(true);
             this.mergeLeft(true);
             this.mergeDown(true);
             this.mergeUp(true);
             if (!this.hasMoved) {
-                this.gameEndForm = document.querySelector('.endFormTemplate') as HTMLTemplateElement;
+                this.gameEndForm = document.querySelector('.game-lost__template') as HTMLTemplateElement;
                 this.gameEndFormClone = this.gameEndForm.content.cloneNode(true);
-                document.querySelector('.ui').appendChild(this.gameEndFormClone);
-                this.resetButton = document.querySelector('.startAgainButton') as HTMLButtonElement;
-                this.addEventListeners();
+                document.querySelector('.grid__container').appendChild(this.gameEndFormClone);
+                this.resetButton = document.querySelector('.retry-btn') as HTMLButtonElement;
                 this.gameOver = true;
+                this.addEventListeners();
             }
         }
     }
@@ -273,7 +282,9 @@ export class CellGrid {
     }
 
     resetGame() {
-        document.querySelector('.ui').removeChild(document.querySelector('.restart'));
+        if (this.gameOver){
+            document.querySelector('.grid__container').removeChild(document.querySelector('.retry-btn__container'));
+        }
         this.cells.forEach((cell) => {
             cell.value = 0;
             this.score.innerText = '0';
@@ -284,7 +295,14 @@ export class CellGrid {
     }
 
     addEventListeners() {
-        this.resetButton.addEventListener('click', () => {
+        if (this.gameOver){
+            this.resetButton.addEventListener('click', () => {
+                this.resetGame();
+                this.gameOver = false;
+            })
+        }
+
+        this.resetLink.addEventListener('click', () => {
             this.resetGame();
             this.gameOver = false;
         })

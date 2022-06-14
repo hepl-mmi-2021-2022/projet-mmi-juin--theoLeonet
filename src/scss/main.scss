@@ -1,1 +1,178 @@
-//@import "canvasbp/scss/main";
+@import "canvasbp/scss/main";
+
+// ---- Settings ---- //
+
+// Colors
+$background : #FAF8EF;
+$game-background : #BCACA1;
+$scores-texts: #EEE4D9;
+$btns : #8E7A65;
+$texts : #776E65;
+$white : #FFF;
+$black : #000;
+
+// Fonts
+$fs :  "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+
+@font-face {
+  font-family: 'Clear Sans';
+  src: url('../../assets/fonts/ClearSans-Regular-webfont.woff');
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Clear Sans';
+  src: url('../../assets/fonts/ClearSans-Bold-webfont.woff');
+  font-style: normal;
+  font-weight: bold;
+}
+
+
+// ---- Main code ---- //
+
+body{
+  padding: 32px;
+
+  background: $background;
+  font-family: $fs;
+  color: $texts;
+
+  strong {
+    font-weight: bold;
+  }
+
+  a{
+    display: block;
+    font-weight: bold;
+  }
+}
+
+h1{
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.grid__container{
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: 48px auto;
+
+  background: $game-background;
+  border-radius: .25rem ;
+}
+
+.ui{
+  width: 280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 2em;
+
+  >p{
+    font-size: 14px;
+    width: max-content;
+  }
+}
+
+.scores__container{
+  grid-area: 1/2/2/-1;
+  display: flex;
+  align-items: start;
+  justify-content: end;
+  gap: .5em;
+
+  >*{
+    width: max-content;
+    padding: .5em 1em;
+
+    background: $game-background;
+    color: $scores-texts;
+    border-radius: .25em;
+  }
+}
+
+.score__container, .best-score__container{
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+
+  span{
+    display: block;
+
+    font-size: 25px;
+
+    color: $white;
+  }
+}
+
+.reset-button__container{
+  grid-column: 2/-1;
+  width: max-content;
+  justify-self: end;
+  padding: .5em 1em;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  color: $white;
+  background: $btns;
+  border-radius: .25em;
+}
+
+#htp{
+  font-size: 14px;
+
+  width: 280px;
+  margin: 0 auto;
+}
+
+.retry-btn__container{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  gap: 1em;
+  align-items: center;
+  align-content: center;
+
+  text-align: center;
+
+  background: rgb(255, 255, 255, 0.6);
+
+  .game-lost{
+    font-size: 64px;
+    font-weight: bold;
+  }
+
+  .retry-btn{
+    width: max-content;
+    margin: 0 auto;
+    padding: 0.5em 1em;
+
+    font-size: 18px;
+
+    background: $btns;
+    color: $white;
+    border-radius: .25em;
+  }
+}
+
+@media screen and (min-width: 520px) {
+  h1{
+    font-size: 80px;
+  }
+
+  .grid__container {
+    width: 500px;
+    height: 500px;
+  }
+
+  .ui, #htp{
+    width: 500px;
+
+    >p{
+      font-size: 18px;
+    }
+  }
+}

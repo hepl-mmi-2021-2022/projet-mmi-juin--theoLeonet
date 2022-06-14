@@ -2,9 +2,10 @@ import {BaseShape} from "../../../canvasbp/ts";
 import {settings} from "../settings";
 
 export class Cell extends BaseShape {
-    private readonly w: number;
-    private readonly h: number;
+    private w: number;
+    private h: number;
     value: null | number;
+    private colors: {};
 
     constructor(canvasElement: HTMLCanvasElement, ctx: CanvasRenderingContext2D, positionX: number, rowY: number) {
         super(canvasElement, ctx);
@@ -14,18 +15,25 @@ export class Cell extends BaseShape {
             y: rowY,
         }
 
-        this.w = settings.grid.cells.w;
-        this.h = settings.grid.cells.h;
-
         this.value = 0;
+
+        console.log(this.colors); //{name: "John", date: "25-08-1989", age: "25"}
 
         this.draw();
     }
 
     draw(): void {
+        if (innerWidth > 520){
+            this.w = this.h = settings.grid.cells.bss;
+        }
+        else {
+            this.w = this.h = settings.grid.cells.sss;
+        }
         this.ctx.beginPath();
-        if (this.value) this.ctx.fillStyle = `hsl(${this.value*10}, 50%, 50%)`;
-        else this.ctx.fillStyle = 'hsla(43, 62%, 74%, 1)';
+        if (this.value) {
+            this.value <= 2048 ? this.ctx.fillStyle = settings.grid.cells.colors[this.value] : this.ctx.fillStyle = settings.grid.cells.colors[2048];
+        }
+        else this.ctx.fillStyle = 'hsla(31, 20%, 75%, 1)';
         this.ctx.fillRect(this.position.x, this.position.y, this.w, this.h);
         this.ctx.stroke();
         this.ctx.closePath();
@@ -33,7 +41,8 @@ export class Cell extends BaseShape {
         if (this.value){
             this.ctx.beginPath();
             this.ctx.font = "bold 32px Arial";
-            this.ctx.fillStyle = 'white';
+            if (this.value <= 4) this.ctx.fillStyle = '#776E65';
+            else this.ctx.fillStyle = 'white';
             this.ctx.textAlign = 'center'
             this.ctx.fillText(this.value.toString(), this.position.x + this.w/2, this.position.y + this.h/2 + 32/2);
             this.ctx.closePath();

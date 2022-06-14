@@ -14,13 +14,18 @@ export class Row implements IHasCanvas {
         this.canvasElement = canvasElement;
         this.ctx = ctx;
         this.cells = [];
-        this.createRow(this.canvasElement.width / 2 - (settings.grid.cells.w + settings.grid.gap) * settings.grid.columnNumber / 2, rowY + this.canvasElement.height / 2 - (settings.grid.cells.h + settings.grid.gap) * settings.grid.rowNumber / 2);
+        this.createRow(innerWidth > 520 ? settings.grid.bsg : settings.grid.ssg , rowY);
     }
 
     createRow(cellX: number, rowY: number): Cell[] {
         for (let i = 0; i < settings.grid.columnNumber; i++) {
             this.cells.push(new Cell(this.canvasElement, this.ctx, cellX, rowY));
-            cellX += settings.grid.gap + settings.grid.cells.w;
+            if (innerWidth > 520){
+                cellX += settings.grid.bsg + settings.grid.cells.bss;
+            }
+            else {
+                cellX += settings.grid.ssg + settings.grid.cells.sss;
+            }
         }
         cellX = 0;
         return this.cells;
